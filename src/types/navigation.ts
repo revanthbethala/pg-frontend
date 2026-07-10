@@ -3,7 +3,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 export type MainTabParamList = {
   Branches: undefined;
   Profile: undefined;
-  // Dashboard: undefined;
+  Dashboard: undefined;
 };
 
 export type PgStackParamList = {
@@ -11,10 +11,12 @@ export type PgStackParamList = {
   Rooms: {
     branchId: string;
     branchName: string;
+    isActive: boolean;
   };
   Guests: {
     roomId: string;
     roomNumber: string;
+    capacity: number;
   };
   GuestDetails: {
     guestId: string;

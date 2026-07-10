@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { branchType } from '@/features/branches/types/branch';
-import { roomType } from '@/features/rooms/types/room';
-import { guestType } from '@/features/guests/types/guest';
+import { roomType } from '@/features/rooms/types/room.types';
+import { guestType } from '@/features/guests/types/guest.types';
 
 export async function loadBranches(): Promise<branchType[]> {
   const data = await AsyncStorage.getItem('branches');

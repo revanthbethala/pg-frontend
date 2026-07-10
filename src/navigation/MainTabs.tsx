@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   Building2,
+  LayoutDashboard,
   Users
 } from 'lucide-react-native';
 
@@ -8,6 +9,7 @@ import { Branches } from '@/features/branches';
 import { Profile } from '@/features/profile';
 import { colors } from '@/styles/colors';
 import { MainTabParamList } from '@/types/navigation';
+import Dashboard from '@/features/dashboard/screens/Dashboard';
 
 export const MainTabs =
   createBottomTabNavigator<MainTabParamList>({
@@ -26,14 +28,14 @@ export const MainTabs =
     },
 
     screens: {
-      // Dashboard: {
-      //   screen: Dashboard,
-      //   options: {
-      //     tabBarIcon: ({ color, size }) => (
-      //       <LayoutDashboard color={color} size={size} />
-      //     ),
-      //   },
-      // },
+      Dashboard: {
+        screen: Dashboard,
+        options: {
+          tabBarIcon: ({ color, size }) => (
+            <LayoutDashboard color={color} size={size} />
+          ),
+        },
+      },
 
       Branches: {
         screen: Branches,

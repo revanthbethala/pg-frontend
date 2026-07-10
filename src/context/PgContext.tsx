@@ -1,6 +1,6 @@
 import { branchType } from "@/features/branches/types/branch";
-import { guestType } from "@/features/guests/types/guest";
-import { roomType } from "@/features/rooms/types/room";
+import { guestType } from "@/features/guests/types/guest.types";
+import { roomType } from "@/features/rooms/types/room.types";
 import { loadGuests, loadRooms, saveBranches, saveGuests, saveRooms } from "@/storage/pgStorage";
 import { createContext, useState } from "react";
 

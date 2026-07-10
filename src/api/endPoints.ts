@@ -11,6 +11,9 @@ export const ENDPOINTS = {
     UPDATE_PROFILE: '/users/me',
     DELETE_PROFILE: '/users/me',
   },
+  DASHBOARD: {
+    DASHBOARD: '/dashboard',
+  },
 
   BRANCH: {
     BRANCHES: `/branches`,
