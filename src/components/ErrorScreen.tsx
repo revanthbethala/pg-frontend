@@ -1,6 +1,7 @@
 import { commonStyles } from "@/styles/commonStyle";
 import { styles } from "@/styles/formStyle";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
+import { SafeScreen } from "./SafeScreen";
 
 type ErrorProps = {
     message?: string;
@@ -9,8 +10,8 @@ type ErrorProps = {
 export default function ErrorScreen({ message }: ErrorProps) {
     if (!message) return "Something went wrong";
 
-    return <View style={commonStyles.container}>
-        <Text style={styles.error}>{message}</Text>
-    </View>;
+    return <SafeScreen>
+        <Text style={[styles.error, commonStyles.centeredText]}>{message}</Text>
+    </SafeScreen>;
 }
 

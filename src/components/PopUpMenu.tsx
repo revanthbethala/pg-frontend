@@ -50,7 +50,7 @@ export function PopupMenu({
                             },
                             optionText: {
                                 color: action.destructive
-                                    ? colors.error
+                                    ? colors.destructive
                                     : colors.text,
                                 fontSize: 15,
                             },

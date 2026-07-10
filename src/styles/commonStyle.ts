@@ -10,7 +10,7 @@ export const commonStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
     backgroundColor: colors.background,
   },
   containerTitle: {
@@ -37,7 +37,7 @@ export const commonStyles = StyleSheet.create({
     fontSize: 16,
   },
   actionDestructive: {
-    color: colors.error,
+    color: colors.destructive,
   },
   columnStyle: {
     justifyContent: 'space-between',
@@ -66,6 +66,6 @@ export const commonStyles = StyleSheet.create({
 
   statusInactive: {
     fontWeight: 'bold',
-    color: colors.error,
+    color: colors.destructive,
   },
 });

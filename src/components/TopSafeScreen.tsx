@@ -14,7 +14,6 @@ export const TopSafeScreen = ({ children }: { children: React.ReactNode }) => {
 const screenStyles = StyleSheet.create({
     container: {
         backgroundColor: colors.secondary,
-        marginBottom: 20,
         flex: 1
     }
 })

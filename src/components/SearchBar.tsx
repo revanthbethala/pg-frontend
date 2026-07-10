@@ -26,6 +26,7 @@ export const SearchBar = ({ query, setQuery, placeholder = 'Search' }: SearchBar
 const searchStyles = StyleSheet.create({
     searchBar: {
         flexDirection: 'row',
+        backgroundColor: colors.surface,
         alignItems: 'center',
         gap: 4,
         marginBottom: 16,

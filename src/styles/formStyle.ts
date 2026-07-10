@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
   },
 
   error: {
-    color: colors.error,
+    color: colors.destructive,
     fontWeight: '600',
   },
 
