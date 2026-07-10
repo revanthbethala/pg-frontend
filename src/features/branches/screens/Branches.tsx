@@ -3,9 +3,9 @@ import ErrorScreen from '@/components/ErrorScreen';
 import { FloatingButton } from '@/components/FloatingButton';
 import Loader from '@/components/Loader';
 import { ModalWrapper } from '@/components/ModalWrapper';
-import { TopSafeScreen } from '@/components/TopSafeScreen';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SearchBar } from '@/components/SearchBar';
+import { TopSafeScreen } from '@/components/TopSafeScreen';
 import { AddBranch } from '@/features/branches/components/AddBranch';
 import { BranchCard } from '@/features/branches/components/BranchCard';
 import { EditBranch } from '@/features/branches/components/EditBranch';
@@ -24,7 +24,6 @@ export const Branches = () => {
     const [selectedBranch, setSelectedBranch] = useState<branchType | null>(null);
     const handleShowModal = () => { setShowAddModal(!showAddModal); }
     const { isLoading, data: branches, isRefetching, refetch, error, isError } = useBranches();
-
     const debouncedQuery = useDebounce(query);
 
     const filteredBranches = useMemo(() => {

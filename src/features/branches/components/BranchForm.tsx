@@ -51,12 +51,6 @@ export function BranchForm({
 
             <FormInput
                 control={control}
-                name="city"
-                placeholder="Branch City"
-            />
-
-            <FormInput
-                control={control}
                 name="address"
                 placeholder="Branch Address"
             />

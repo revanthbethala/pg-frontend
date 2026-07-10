@@ -39,8 +39,8 @@ export function EditBranch({
             title="Edit Branch"
             submitButtonTitle="Update Branch"
             defaultValues={{
+
                 branchName: branch.branchName,
-                city: branch.city,
                 address: branch.address,
                 isActive: branch.isActive,
             }}

@@ -3,6 +3,7 @@ import { queryClient } from '@/api/queryClient';
 import { updateBranch } from '@/features/branches/api/branches.api';
 import { branchFormType } from '@/features/branches/types/branch';
 import { branchKeys } from '@/features/branches/hooks/branch.keys';
+import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
 
 type UpdateBranchVariables = {
   branchId: string;
@@ -14,6 +15,8 @@ export const useUpdateBranch = () => {
     mutationFn: ({ branchId, data }: UpdateBranchVariables) =>
       updateBranch(branchId, data),
     onSuccess: () => {
+      invalidateDashboard();
+
       queryClient.invalidateQueries({ queryKey: branchKeys.all });
     },
   });
