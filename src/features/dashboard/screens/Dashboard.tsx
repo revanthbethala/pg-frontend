@@ -4,49 +4,52 @@ import {
     IndianRupee,
     UserPlus,
     Users,
-    Wrench,
+    Wrench
 } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
 
-import { TopSafeScreen } from "@/components/TopSafeScreen";
+import Loader from "@/components/Loader";
 import { ScreenHeader } from "@/components/ScreenHeader";
-import { usePgContext } from "@/context/usePgContext";
+import { TopSafeScreen } from "@/components/TopSafeScreen";
 import { StatCard } from "@/features/dashboard/components/StatCard";
 import { styles } from "@/features/dashboard/styles/dashboard.styles";
 import { colors } from "@/styles/colors";
+import { commonStyles } from "@/styles/commonStyle";
+import { useDashboard } from "../hooks/queries/useDashboard";
+import ErrorScreen from "@/components/ErrorScreen";
+import { getApiError } from "@/utils/getApiError";
+
+
 
 const Dashboard = () => {
-    const { branches, rooms, guests } = usePgContext();
+    const { data: dashboard, isLoading, isError, error } = useDashboard();
 
-    // const { data: branches } = useQueries({})
-    const branchesLength = branches?.length;
-    const roomsLength = rooms?.length;
-    const guestsLength = guests?.length;
+    if (isLoading)
+        return <Loader />
+    if (isError)
+        return <ErrorScreen message={getApiError(error)} />
+    if (!dashboard) {
+        return <ErrorScreen message="Unable to load dashboard" />
+    }
+    const {
+        averageMonthlyRent,
+        branches: branchesLength,
+        guests: guestsLength,
+        guestsThisMonth,
+        rooms: roomsLength,
+        roomsUnderMaintenance,
+    } = dashboard;
 
-    const currentDate = new Date();
-    const guestsThisMonth = guests.filter((_guest) => {
-        const joiningDate = new Date();
-        return (
-            joiningDate.getFullYear() === currentDate.getFullYear() &&
-            joiningDate.getMonth() === currentDate.getMonth()
-        );
-    }).length;
 
-    const monthlyRent = guests.reduce((total, guest) => {
-        const room = rooms.find((r) => r.id === guest.roomId);
-        return total + Number(room?.rent ?? 0);
-    }, 0);
-    const avgMonthlyRent = guests.length > 0 ? monthlyRent / guests.length : 0;
-
-    const roomsUnderMaintainance = rooms.filter(
-        (room) => room.maintainance
-    ).length;
 
     return (
         <TopSafeScreen>
-            <ScreenHeader title="Dashboard" canGoBack={false} />
-            <View style={styles.grid}>
+            <View style={commonStyles.headerSection}>
+                <ScreenHeader title="Dashboard" canGoBack={false} />
+            </View>
+
+            <View style={[styles.grid, commonStyles.bodySection]}>
                 <StatCard
                     title="Branches"
                     value={branchesLength}
@@ -69,16 +72,23 @@ const Dashboard = () => {
                 />
                 <StatCard
                     title="Avg Monthly Rent Collected"
-                    value={`₹${avgMonthlyRent}`}
+                    value={`₹${averageMonthlyRent.toFixed(2)}`}
                     icon={<IndianRupee size={24} color={colors.primary} />}
                     fullWidth
                 />
                 <StatCard
                     title="Rooms in Maintainance"
-                    value={roomsUnderMaintainance}
-                    icon={<Wrench size={24} color={colors.error} />}
+                    value={roomsUnderMaintenance}
+                    icon={<Wrench size={24} color={colors.destructive} />}
                     fullWidth
+
                 />
+                {/* <StatCard
+                    title="Inactive Branches"
+                    value={inActiveBranches}
+                    icon={<Building2Icon size={24} color={colors.destructive} />}
+
+                /> */}
             </View>
         </TopSafeScreen>
     );
