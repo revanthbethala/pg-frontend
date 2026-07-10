@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { deleteBranch } from '@/features/branches/api/branches.api';
+import { deleteBranch } from '@/api/branches.api';
 import { queryClient } from '@/api/queryClient';
 import { branchKeys } from '@/features/branches/hooks/branch.keys';
 import { showAlert } from '@/utils/showAlert';

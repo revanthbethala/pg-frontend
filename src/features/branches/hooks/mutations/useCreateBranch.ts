@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { createBranch } from '@/features/branches/api/branches.api';
+import { createBranch } from '@/api/branches.api';
 import { queryClient } from '@/api/queryClient';
 import { branchKeys } from '@/features/branches/hooks/branch.keys';
 import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
@@ -9,7 +9,6 @@ export const useCreateBranch = () => {
     mutationFn: createBranch,
     onSuccess: () => {
       invalidateDashboard();
-
       queryClient.invalidateQueries({ queryKey: branchKeys.all });
     },
   });

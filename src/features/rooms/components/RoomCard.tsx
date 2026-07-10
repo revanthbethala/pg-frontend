@@ -9,7 +9,7 @@ import { showAlert } from "@/utils/showAlert";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Text, View } from "react-native";
-import { deleteRoom } from "../api/room.api";
+import { deleteRoom } from "../../../api/room.api";
 
 export function RoomCard({ room, onEdit }: { room: roomType, onEdit: (room: roomType) => void }) {
     const navigation = useNavigation<NativeStackNavigationProp<PgStackParamList, 'Guests'>>();

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getBranchById } from '@/features/branches/api/branches.api';
+import { getBranchById } from '@/api/branches.api';
 import { branchKeys } from '@/features/branches/hooks/branch.keys';
 
 export const useBranch = (branchId: string) => {

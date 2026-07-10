@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { createGuest } from '@/features/guests/api/guest.api';
+import { createGuest } from '@/api/guest.api';
 import { GuestFormType } from '@/features/guests/types/guest.types';
 import { queryClient } from '@/api/queryClient';
 import { guestKeys } from '@/features/guests/guest.keys';

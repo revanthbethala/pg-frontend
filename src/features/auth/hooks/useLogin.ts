@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useAuthContext } from '@/context/useAuthContext';
 import { tokenStorage } from '@/services/tokenStorage';
-import { login } from '@/features/auth/api/auth.api';
+import { login } from '@/api/auth.api';
 import { loginType } from '@/features/auth/types/auth';
 
 export function useLogin() {

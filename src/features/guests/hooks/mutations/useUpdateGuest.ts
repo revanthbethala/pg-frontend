@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/api/queryClient';
-import { updateGuest } from '@/features/guests/api/guest.api';
+import { updateGuest } from '@/api/guest.api';
 import { guestKeys } from '@/features/guests/guest.keys';
 import { guestType } from '@/features/guests/types/guest.types';
 import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';

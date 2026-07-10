@@ -13,7 +13,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { User } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Text, View } from "react-native";
-import { deleteGuest } from "../api/guest.api";
+import { deleteGuest } from "../../../api/guest.api";
 export function GuestCard({ guest, onEdit }: { guest: guestType, onEdit: (guest: guestType) => void }) {
     const navigation = useNavigation<NativeStackNavigationProp<PgStackParamList, 'Guests'>>();
     const [hasErr, setHasErr] = useState(Boolean(!guest?.profilePic));

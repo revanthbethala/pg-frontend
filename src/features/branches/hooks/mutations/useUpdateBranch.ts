@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/api/queryClient';
-import { updateBranch } from '@/features/branches/api/branches.api';
+import { updateBranch } from '@/api/branches.api';
 import { branchFormType } from '@/features/branches/types/branch';
 import { branchKeys } from '@/features/branches/hooks/branch.keys';
 import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';

@@ -1,5 +1,5 @@
 import { queryClient } from '@/api/queryClient';
-import { updateRoom } from '@/features/rooms/api/room.api';
+import { updateRoom } from '@/api/room.api';
 import { roomKeys } from '@/features/rooms/room.keys';
 import { EditRoomRequestType } from '@/features/rooms/types/room.types';
 import { useMutation } from '@tanstack/react-query';

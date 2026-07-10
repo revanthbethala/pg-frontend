@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getBranches } from '@/features/branches/api/branches.api';
+import { getBranches } from '@/api/branches.api';
 import { branchKeys } from '@/features/branches/hooks/branch.keys';
 
 export const useBranches = () => {

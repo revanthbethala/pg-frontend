@@ -22,7 +22,6 @@ export const Branches = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedBranch, setSelectedBranch] = useState<branchType | null>(null);
-    const handleShowModal = () => { setShowAddModal(!showAddModal); }
     const { isLoading, data: branches, isRefetching, refetch, error, isError } = useBranches();
     const debouncedQuery = useDebounce(query);
 
@@ -31,6 +30,7 @@ export const Branches = () => {
         return branches?.filter(branch => branch.branchName.toLowerCase().includes(debouncedQuery.toLowerCase())) || [];
     }, [debouncedQuery, branches]);
 
+    const handleShowModal = () => { setShowAddModal(!showAddModal); }
 
     const handleEditBranch = (branch: branchType) => {
         setSelectedBranch(branch);
@@ -42,11 +42,9 @@ export const Branches = () => {
         setSelectedBranch(null);
     };
 
-    if (isLoading)
-        return <Loader />
-    if (isError) {
-        <ErrorScreen message={error.message} />
-    }
+    if (isLoading) return <Loader />
+    if (isError) <ErrorScreen message={error.message} />
+
     return (
         <TopSafeScreen>
             <View style={commonStyles.headerSection}>
@@ -71,13 +69,8 @@ export const Branches = () => {
                 <ModalWrapper visible={showAddModal} onClose={handleShowModal}>
                     <AddBranch onClose={handleShowModal} />
                 </ModalWrapper>
-                <ModalWrapper
-                    visible={showEditModal}
-                    onClose={handleCloseEditModal}
-                >
-                    {selectedBranch && (
-                        <EditBranch branch={selectedBranch} onClose={handleCloseEditModal} />
-                    )}
+                <ModalWrapper visible={showEditModal} onClose={handleCloseEditModal}>
+                    {selectedBranch && <EditBranch branch={selectedBranch} onClose={handleCloseEditModal} />}
                 </ModalWrapper>
             </View>
 
