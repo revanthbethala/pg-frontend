@@ -9,7 +9,7 @@ import { SearchBar } from '@/components/SearchBar';
 import { AddGuest } from '@/features/guests/components/AddGuest';
 import { GuestCard } from '@/features/guests/components/GuestCard';
 import { useGuests } from '@/features/guests/hooks/queries/useGuests';
-import { guestType } from '@/features/guests/types/guest';
+import { guestType } from '@/features/guests/types/guest.types';
 import { useDebounce } from '@/hooks/useDebounce';
 import { PgStackParamList } from '@/types/navigation';
 import { RouteProp, useRoute } from '@react-navigation/native';
@@ -18,26 +18,15 @@ import React, { useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { EditGuest } from '../components/EditGuest';
 import { commonStyles } from '@/styles/commonStyle';
+import { showAlert } from '@/utils/showAlert';
 export const Guests = () => {
     const route = useRoute<RouteProp<PgStackParamList, 'Guests'>>();
-    const { roomId, roomNumber } = route.params
+    const { roomId, roomNumber, capacity } = route.params
     const [showModal, setShowModal] = useState(false);
-    const handleShowModal = () => {
-        setShowModal(!showModal);
-    }
+
     const { data: guests, isLoading, isError, error, refetch, isRefetching } = useGuests(roomId);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedGuest, setSelectedGuest] = useState<guestType | null>(null);
-
-    const handleShowEditModal = (guest: guestType) => {
-        setShowEditModal(true);
-        setSelectedGuest(guest)
-    }
-    const handleCloseEditModal = () => {
-        setShowEditModal(false);
-        setSelectedGuest(null);
-    }
-
     const [query, setQuery] = useState("");
     const debouncedQuery = useDebounce(query)
     const searchedGuests = useMemo(() => {
@@ -49,11 +38,28 @@ export const Guests = () => {
             return nameMatches || phoneMatches;
         });
     }, [debouncedQuery, guests]);
-    if (isLoading) {
+    if (isLoading || isRefetching) {
         return <Loader />
     }
     if (isError) {
         <ErrorScreen message={error.message} />
+    }
+
+    const handleShowModal = () => {
+        if ((guests?.length ?? 0) >= capacity) {
+            showAlert("Guests overload", `Cant add more than ${capacity} guests in this room`);
+            return;
+        }
+        setShowModal(!showModal);
+    }
+    const handleShowEditModal = (guest: guestType) => {
+
+        setShowEditModal(true);
+        setSelectedGuest(guest)
+    }
+    const handleCloseEditModal = () => {
+        setShowEditModal(false);
+        setSelectedGuest(null);
     }
     return (
         <TopSafeScreen>

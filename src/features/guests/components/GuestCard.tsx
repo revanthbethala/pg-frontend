@@ -1,27 +1,26 @@
 import ActionButton from "@/components/ActionButton";
 import { PopupMenu } from "@/components/PopUpMenu";
-import { guestType } from "@/features/guests/types/guest";
+import { guestType } from "@/features/guests/types/guest.types";
 import { avatarStyle } from "@/styles/avatarStyle";
 import { cardStyle } from "@/styles/cardStyle";
 import { colors } from "@/styles/colors";
 import { PgStackParamList } from "@/types/navigation";
 import { capitalize } from "@/utils/capitalize";
 import { showConfirmAlert } from "@/utils/confirmAlert";
-import { getApiError } from "@/utils/getApiError";
+import { formatDate } from "@/utils/formatDate";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { User } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Text, View } from "react-native";
 import { deleteGuest } from "../api/guest.api";
-import { showAlert } from "@/utils/showAlert";
-import { formatDate } from "@/utils/formatDate";
 export function GuestCard({ guest, onEdit }: { guest: guestType, onEdit: (guest: guestType) => void }) {
     const navigation = useNavigation<NativeStackNavigationProp<PgStackParamList, 'Guests'>>();
-    const [hasErr, setHasErr] = useState(Boolean(!guest?.profilePic?.uri));
+    const [hasErr, setHasErr] = useState(Boolean(!guest?.profilePic));
     const handlePress = () => {
         navigation.navigate('GuestDetails', { guestId: guest.id, guestName: guest.name });
     };
+    console.log("profile", guest?.profilePic);
     const handleEdit = () => {
         onEdit(guest)
     };
@@ -29,12 +28,12 @@ export function GuestCard({ guest, onEdit }: { guest: guestType, onEdit: (guest:
         try {
             await deleteGuest(guest.id);
         } catch (err) {
-            showAlert("Delete Failed", getApiError(err))
+            console.log(err);
         }
     }
     const handleDelete = () => {
         showConfirmAlert({
-            title: "Delete Room", message: `Are you sure you want to delete "${guest.id}"?`,
+            title: "Delete Room", message: `Are you sure you want to delete "${guest.name}"?`,
             confirmText: "Delete", onConfirm: deleteRoomFn
         })
     };
@@ -64,7 +63,7 @@ export function GuestCard({ guest, onEdit }: { guest: guestType, onEdit: (guest:
                     {hasErr ?
                         <User color={colors.inactive} size={50} style={[avatarStyle.avatar]} />
                         :
-                        <Image source={guest.profilePic}
+                        <Image source={{ uri: guest.profilePic }}
                             onError={() => setHasErr(true)}
                             style={avatarStyle.img}
                             resizeMode="cover"

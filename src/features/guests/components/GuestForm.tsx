@@ -26,7 +26,7 @@ import { guestFormStyles } from "@/features/guests/styles/guestForm.style";
 import DateTimePicker, {
     DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { GuestFormType } from "../types/guest";
+import { GuestFormType } from "../types/guest.types";
 
 type GuestFormProps = {
     title: string;
@@ -67,9 +67,10 @@ export function GuestForm({
 
     const handleCamera = async () => {
         const [image] = await onPickFromCamera();
+        console.log("Image", image);
 
         if (image) {
-            setValue("profilePic", image, {
+            setValue("profilePic", image.uri, {
                 shouldDirty: true,
                 shouldValidate: true,
             });
@@ -78,9 +79,10 @@ export function GuestForm({
 
     const handleGallery = async () => {
         const [image] = await onPickFromGallery();
+        console.log("Image", image);
 
         if (image) {
-            setValue("profilePic", image, {
+            setValue("profilePic", image.uri, {
                 shouldDirty: true,
                 shouldValidate: true,
             });
@@ -93,9 +95,9 @@ export function GuestForm({
             <Text style={styles.title}>{title}</Text>
 
             <View style={guestFormStyles.avatarSection}>
-                {profilePic?.uri ? (
+                {profilePic ? (
                     <Image
-                        source={profilePic}
+                        source={{ uri: profilePic }}
                         style={avatarStyle.img}
                         resizeMode="cover"
                     />
@@ -161,58 +163,6 @@ export function GuestForm({
                 style={guestFormStyles.addressInput}
             />
 
-            {/* <Controller
-                control={control}
-                name="joiningDate"
-                render={({ field, fieldState }) => (
-                    <>
-                        <TouchableOpacity
-                            style={[
-                                styles.input,
-                                guestFormStyles.dateInput,
-                            ]}
-                            onPress={() => setOpenDatePicker(true)}
-                        >
-                            <View style={commonStyles.actionContainer}>
-                                <CalendarDays
-                                    size={20}
-                                    color={colors.primary}
-                                />
-
-                                <Text
-                                    style={{
-                                        color: field.value
-                                            ? colors.text
-                                            : colors.inactive,
-                                    }}
-                                >
-                                    {field.value
-                                        ? formatDate(field.value)
-                                        : "Select Joining Date"}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-
-                        <DatePicker
-                            modal
-                            open={openDatePicker}
-                            date={field.value ?? new Date()}
-                            mode="date"
-                            maximumDate={new Date()}
-                            title="Select Joining Date"
-                            confirmText="Confirm"
-                            cancelText="Cancel"
-                            onConfirm={(date) => {
-                                setOpenDatePicker(false);
-                                field.onChange(date);
-                            }}
-                            onCancel={() => setOpenDatePicker(false)}
-                        />
-
-                        <ErrorText message={fieldState.error?.message} />
-                    </>
-                )}
-            /> */}
 
 
 

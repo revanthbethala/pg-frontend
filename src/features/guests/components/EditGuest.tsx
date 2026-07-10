@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { GuestForm } from "@/features/guests/components/GuestForm";
 import { useUpdateGuest } from "@/features/guests/hooks/mutations/useUpdateGuest";
-import { GuestFormType, guestType } from "@/features/guests/types/guest";
+import { GuestFormType, guestType } from "@/features/guests/types/guest.types";
 
 import { useImagePicker } from "@/hooks/useImagePicker";
 import { getApiError } from "@/utils/getApiError";
@@ -26,12 +26,10 @@ export function EditGuest({
         payload: GuestFormType
     ) => {
         try {
-            // const profile = payload?.profilePic?.uri;
             await mutateAsync({
                 guestId: guest.id,
                 guestData: {
                     ...payload,
-                    // profilePic: profile ?? undefined,
                 },
             });
 
@@ -47,6 +45,7 @@ export function EditGuest({
             submitButtonTitle="Update Guest"
             defaultValues={
                 {
+                    profilePic: guest?.profilePic,
                     name: guest.name,
                     phone: guest.phone,
                     aadhaar: guest.aadhaar,

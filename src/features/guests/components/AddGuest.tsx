@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { GuestForm } from "@/features/guests/components/GuestForm";
 import { useCreateGuest } from "@/features/guests/hooks/mutations/useCreateGuest";
-import { GuestFormType } from "@/features/guests/types/guest";
+import { GuestFormType } from "@/features/guests/types/guest.types";
 
 import { useImagePicker } from "@/hooks/useImagePicker";
 import { getApiError } from "@/utils/getApiError";

@@ -1,14 +1,15 @@
 import { z } from 'zod';
 
 export const guestSchema = z.object({
-  profilePic: z
-    .object({
-      uri: z.string(),
-      type: z.string().optional(),
-      fileName: z.string().optional(),
-      fileSize: z.number().optional(),
-    })
-    .optional(),
+  // profilePic: z
+  //   .object({
+  //     uri: z.string(),
+  //     type: z.string().optional(),
+  //     fileName: z.string().optional(),
+  //     fileSize: z.number().optional(),
+  //   })
+  //   .optional(),
+  profilePic: z.string().optional(),
   name: z
     .string({ required_error: 'Guest name is required' })
     .trim()

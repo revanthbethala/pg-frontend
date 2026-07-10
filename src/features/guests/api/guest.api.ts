@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '@/api/endPoints';
 import { get, del, put, post } from '@/api/http';
-import { GuestFormType, guestType } from '@/features/guests/types/guest';
+import { GuestFormType, guestType } from '@/features/guests/types/guest.types';
 
 export function getAllGuestsByRoom(roomId: string): Promise<guestType[]> {
   return get<guestType[]>(ENDPOINTS.ROOM.GUESTS(roomId)) || [];
