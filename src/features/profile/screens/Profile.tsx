@@ -5,7 +5,7 @@ import { Pressable, Text, View } from "react-native";
 import ErrorScreen from "@/components/ErrorScreen";
 import Loader from "@/components/Loader";
 import { ModalWrapper } from "@/components/ModalWrapper";
-import { SafeScreen } from "@/components/SafeScreen";
+import { TopSafeScreen } from "@/components/TopSafeScreen";
 import { useAuthContext } from "@/context/useAuthContext";
 import { useGetProfile } from "@/features/profile/hooks/queries/useGetProfile";
 import { profileStyles } from "@/features/profile/styles/profile.style";
@@ -79,73 +79,77 @@ export function Profile() {
     }
 
     return (
-        <SafeScreen >
-            <Text style={commonStyles.containerTitle}>Account</Text>
+        <TopSafeScreen >
+            <View style={commonStyles.headerSection}>
+                <Text style={commonStyles.containerTitle}>Account</Text>
 
-            <View style={profileStyles.card}>
-                <View style={profileStyles.avatar}>
-                    <Text style={profileStyles.avatarText}>
-                        {currentUser.email.charAt(0).toUpperCase()}
+            </View>
+            <View style={commonStyles.bodySection}>
+                <View style={profileStyles.card}>
+                    <View style={profileStyles.avatar}>
+                        <Text style={profileStyles.avatarText}>
+                            {currentUser.email.charAt(0).toUpperCase()}
+                        </Text>
+                    </View>
+
+                    {currentUser.name && (
+                        <Text style={profileStyles.subHeading}>
+                            {capitalize(currentUser.name)}
+                        </Text>
+                    )}
+
+                    <Text style={[profileStyles.actionText, commonStyles.centeredText]}>
+                        {currentUser.email}
                     </Text>
                 </View>
 
-                {currentUser.name && (
-                    <Text style={profileStyles.subHeading}>
-                        {capitalize(currentUser.name)}
-                    </Text>
-                )}
+                <View style={profileStyles.card}>
+                    <Pressable
+                        style={profileStyles.actionButton}
+                        onPress={handleEditProfile}
+                    >
+                        <View style={profileStyles.actionContent}>
+                            <Edit size={18} color={colors.text} />
+                            <Text style={profileStyles.actionText}>
+                                Edit Profile
+                            </Text>
+                        </View>
+                    </Pressable>
 
-                <Text style={[profileStyles.actionText, commonStyles.centeredText]}>
-                    {currentUser.email}
-                </Text>
-            </View>
+                    <Pressable
+                        style={profileStyles.actionButton}
+                        onPress={handleLogout}
+                    >
+                        <View style={profileStyles.actionContent}>
+                            <LogOut size={18} color={colors.destructive} />
+                            <Text style={profileStyles.destructiveText}>
+                                Logout
+                            </Text>
+                        </View>
+                    </Pressable>
 
-            <View style={profileStyles.card}>
-                <Pressable
-                    style={profileStyles.actionButton}
-                    onPress={handleEditProfile}
-                >
-                    <View style={profileStyles.actionContent}>
-                        <Edit size={18} color={colors.text} />
-                        <Text style={profileStyles.actionText}>
-                            Edit Profile
-                        </Text>
-                    </View>
-                </Pressable>
-
-                <Pressable
-                    style={profileStyles.actionButton}
-                    onPress={handleLogout}
-                >
-                    <View style={profileStyles.actionContent}>
-                        <LogOut size={18} color={colors.error} />
-                        <Text style={profileStyles.destructiveText}>
-                            Logout
-                        </Text>
-                    </View>
-                </Pressable>
-
-                <Pressable
-                    style={profileStyles.actionButton}
-                    onPress={deleteAlert}
-                >
-                    <View style={profileStyles.actionContent}>
-                        <Trash2 size={18} color={colors.error} />
-                        <Text style={profileStyles.destructiveText}>
-                            Delete Account
-                        </Text>
-                    </View>
-                </Pressable>
-            </View>
-            <ModalWrapper
-                visible={showEditProfile}
-                onClose={handleCloseEditProfile}
-            >
-                <EditProfile
-                    profile={currentUser}
+                    <Pressable
+                        style={profileStyles.actionButton}
+                        onPress={deleteAlert}
+                    >
+                        <View style={profileStyles.actionContent}>
+                            <Trash2 size={18} color={colors.destructive} />
+                            <Text style={profileStyles.destructiveText}>
+                                Delete Account
+                            </Text>
+                        </View>
+                    </Pressable>
+                </View>
+                <ModalWrapper
+                    visible={showEditProfile}
                     onClose={handleCloseEditProfile}
-                />
-            </ModalWrapper>
-        </SafeScreen>
+                >
+                    <EditProfile
+                        profile={currentUser}
+                        onClose={handleCloseEditProfile}
+                    />
+                </ModalWrapper>
+            </View>
+        </TopSafeScreen>
     );
 }

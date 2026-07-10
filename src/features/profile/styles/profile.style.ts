@@ -54,7 +54,7 @@ export const profileStyles = StyleSheet.create({
   logoutText: {
     fontSize: 16,
     fontWeight: '600',
-    color: colors.error,
+    color: colors.destructive,
   },
 
   actionButton: {
@@ -75,7 +75,7 @@ export const profileStyles = StyleSheet.create({
   },
   destructiveText: {
     fontSize: 16,
-    color: colors.error,
+    color: colors.destructive,
     fontWeight: '500',
   },
 });

@@ -34,7 +34,7 @@ const EditProfile = ({ onClose, profile }: EditProfileProps) => {
     } = useForm<ProfileForm>({
         defaultValues: {
             name: profile?.name ?? "",
-            email: profile?.email ?? ""
+            // email: profile?.email ?? ""
         },
         resolver: zodResolver(profileSchema),
     });
@@ -61,11 +61,11 @@ const EditProfile = ({ onClose, profile }: EditProfileProps) => {
             />
 
 
-            <FormInput
+            {/* <FormInput
                 control={control}
                 name="email"
                 placeholder="Email"
-            />
+            /> */}
             <SubmitButton
                 title="Edit Profile"
                 loading={isPending}
