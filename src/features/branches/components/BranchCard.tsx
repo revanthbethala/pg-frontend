@@ -6,14 +6,12 @@ import { cardStyle } from "@/styles/cardStyle";
 import { commonStyles } from "@/styles/commonStyle";
 import { PgStackParamList } from "@/types/navigation";
 import { capitalize } from "@/utils/capitalize";
-import { getApiError } from "@/utils/getApiError";
 
 import ActionButton from "@/components/ActionButton";
 import { PopupMenu } from "@/components/PopUpMenu";
 import { useDeleteBranch } from "@/features/branches/hooks/mutations/useDeleteBranch";
 import { branchType } from "@/features/branches/types/branch";
 import { showConfirmAlert } from "@/utils/confirmAlert";
-import { showAlert } from "@/utils/showAlert";
 
 type NavigationProp = NativeStackNavigationProp<PgStackParamList>;
 
@@ -34,15 +32,16 @@ export function BranchCard({ branch, onEdit }: Props) {
         navigation.getParent()?.navigate("Rooms", {
             branchId: branch.id,
             branchName: branch.branchName,
+            isActive: branch.isActive
         });
     };
 
     const deleteBranchFn = async () => {
         try {
             await deleteBranch(branch.id);
-        } catch (err) {
-            showAlert("Delete Failed", getApiError(err))
 
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -84,9 +83,6 @@ export function BranchCard({ branch, onEdit }: Props) {
                     numberOfLines={2}
                 >
                     Address: {branch.address}
-                </Text>
-                <Text style={cardStyle.text}>
-                    City: {capitalize(branch.city)}
                 </Text>
 
 
