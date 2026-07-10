@@ -1,6 +1,10 @@
 import { ENDPOINTS } from '@/api/endPoints';
-import { get, del, post, put } from '@/api/http';
-import { RoomRequestType, roomType } from '@/features/rooms/types/room';
+import { del, get, post, put } from '@/api/http';
+import {
+  CreateRoomRequestType,
+  EditRoomRequestType,
+  roomType,
+} from '@/features/rooms/types/room.types';
 
 export function getAllRooms(branchId: string): Promise<roomType[]> {
   return get<roomType[]>(ENDPOINTS.BRANCH.ROOMS(branchId));
@@ -8,9 +12,9 @@ export function getAllRooms(branchId: string): Promise<roomType[]> {
 
 export function createRoom(
   branchId: string,
-  roomData: RoomRequestType,
+  roomData: CreateRoomRequestType,
 ): Promise<roomType> {
-  return post<roomType, RoomRequestType>(
+  return post<roomType, CreateRoomRequestType>(
     ENDPOINTS.BRANCH.CREATE_ROOM(branchId),
     roomData,
   );
@@ -22,9 +26,9 @@ export function getRoomById(roomId: string): Promise<roomType> {
 
 export function updateRoom(
   roomId: string,
-  roomData: Partial<roomType>,
+  roomData: EditRoomRequestType,
 ): Promise<roomType> {
-  return put<roomType, Partial<roomType>>(
+  return put<roomType, EditRoomRequestType>(
     ENDPOINTS.ROOM.UPDATE(roomId),
     roomData,
   );

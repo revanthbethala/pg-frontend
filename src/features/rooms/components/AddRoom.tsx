@@ -3,7 +3,7 @@ import { useState } from "react";
 import { getApiError } from "@/utils/getApiError";
 
 import { useCreateRoom } from "@/features/rooms/hooks/mutations/useCreateRoom";
-import { RoomRequestType } from "@/features/rooms/types/room";
+import { RoomRequestType } from "@/features/rooms/types/room.types";
 import { RoomForm } from "./RoomForm";
 
 type Props = {

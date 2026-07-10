@@ -1,16 +1,32 @@
 import { z } from 'zod';
 
+const numericField = (requiredMessage: string) =>
+  z.preprocess(
+    val => {
+      if (val === '' || val === null || val === undefined) return undefined;
+      const parsed = Number(val);
+      return Number.isNaN(parsed) ? val : parsed;
+    },
+    z.number({
+      required_error: requiredMessage,
+      invalid_type_error: 'Must be a number',
+    }),
+  );
+
 export const roomSchema = z.object({
-  roomNumber: z
-    .string({ required_error: 'Room number is required' })
-    .min(1, 'Room number is required'),
-  capacity: z
-    .string({ required_error: 'Capacity is required' })
-    .min(1, 'Capacity is required')
-    .regex(/^\d+$/, 'Must be a number'),
-  rent: z
-    .string({ required_error: 'Rent is required' })
-    .min(1, 'Rent is required')
-    .regex(/^\d+(\.\d+)?$/, 'Must be a number'),
+  roomNumber: z.string().min(1, 'Room number is required'),
+
+  capacity: numericField('Capacity is required')
+    .refine(val => Number.isInteger(val), {
+      message: 'Must be a  number',
+    })
+    .refine(val => val > 0, {
+      message: 'Must be greater than 0',
+    }),
+
+  rent: numericField('Rent is required').refine(val => val > 0, {
+    message: 'Must be greater than 0',
+  }),
+
   maintainance: z.boolean().default(false).optional(),
 });

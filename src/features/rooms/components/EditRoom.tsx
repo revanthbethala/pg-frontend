@@ -3,7 +3,10 @@ import { useState } from "react";
 import { getApiError } from "@/utils/getApiError";
 
 import { useUpdateRoom } from "@/features/rooms/hooks/mutations/useUpdateRoom";
-import { RoomRequestType, roomType } from "@/features/rooms/types/room";
+import {
+    RoomFormType,
+    roomType
+} from "@/features/rooms/types/room.types";
 import { RoomForm } from "./RoomForm";
 
 type Props = {
@@ -19,13 +22,18 @@ export function EditRoom({
 
     const [formError, setFormError] = useState("");
 
-    const handleSubmit = async (data: RoomRequestType) => {
+    const handleSubmit = async (
+        data: RoomFormType,
+    ) => {
+
+
         try {
             setFormError("");
 
             await mutateAsync({
                 roomId: room.id,
                 roomData: {
+                    branchId: room.branchId,
                     roomNumber: data.roomNumber,
                     capacity: data.capacity,
                     rent: data.rent,

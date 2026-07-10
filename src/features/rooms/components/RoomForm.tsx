@@ -10,15 +10,15 @@ import SubmitButton from "@/components/form/SubmitButton";
 import { styles } from "@/styles/formStyle";
 
 import { roomSchema } from "@/features/rooms/schema/roomSchema";
-import { RoomRequestType } from "@/features/rooms/types/room";
+import { RoomFormType } from "@/features/rooms/types/room.types";
 
 type RoomFormProps = {
     title: string;
     submitButtonTitle: string;
-    defaultValues?: RoomRequestType;
+    defaultValues?: RoomFormType;
     isPending: boolean;
     formError?: string;
-    onSubmit: (data: RoomRequestType) => Promise<void> | void;
+    onSubmit: (data: RoomFormType) => Promise<void> | void;
     onClose: () => void;
 };
 
@@ -35,8 +35,8 @@ export function RoomForm({
         control,
         handleSubmit,
         formState: { isDirty },
-    } = useForm<RoomRequestType>({
-        resolver: zodResolver(roomSchema),
+    } = useForm<RoomFormType>({
+        resolver: zodResolver(roomSchema) as any,
         defaultValues,
     });
 

@@ -10,7 +10,7 @@ import { AddRoom } from '@/features/rooms/components/AddRoom';
 import { EditRoom } from '@/features/rooms/components/EditRoom';
 import { RoomCard } from '@/features/rooms/components/RoomCard';
 import { useRooms } from '@/features/rooms/hooks/queries/useRooms';
-import { roomType } from '@/features/rooms/types/room';
+import { roomType } from '@/features/rooms/types/room.types';
 import { useDebounce } from '@/hooks/useDebounce';
 import { commonStyles } from '@/styles/commonStyle';
 import { PgStackParamList } from '@/types/navigation';
@@ -18,18 +18,25 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { DoorClosed } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
+import { showAlert } from '@/utils/showAlert';
 
 export const Rooms = () => {
     const [showModal, setShowModal] = useState(false);
     const route = useRoute<RouteProp<PgStackParamList, 'Rooms'>>();
-    const { branchId, branchName } = route.params;
+    const { branchId, branchName, isActive } = route.params;
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState<roomType | null>(null);
 
     const { data: rooms, isError, isLoading, error, isRefetching, refetch } = useRooms(branchId)
 
     const handleShowModal = () => {
+        if (!isActive) {
+            showAlert("Branch Inactive", `${branchName} is not operational.Cant add new rooms`);
+            return;
+        }
+
         setShowModal(!showModal);
+
     }
     const filteredRooms = rooms?.filter((room) => room.branchId === branchId)
     const [query, setQuery] = useState("");
@@ -43,7 +50,7 @@ export const Rooms = () => {
         <ErrorScreen message={error.message} />
     }
 
-    if (isLoading) {
+    if (isLoading || isRefetching) {
         return <Loader />
     }
 
