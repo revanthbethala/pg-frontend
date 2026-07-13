@@ -1,16 +1,12 @@
-import { useMutation } from '@tanstack/react-query';
 import { createBranch } from '@/api/branches.api';
-import { queryClient } from '@/api/queryClient';
 import { branchKeys } from '@/features/branches/hooks/branch.keys';
-import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
+import { dashboardKeys } from '@/features/dashboard/dashboard.keys';
+import { useGenericMutation } from '@/hooks/useGenericMutation';
 
 export const useCreateBranch = () => {
-  const mutation = useMutation({
-    mutationFn: createBranch,
-    onSuccess: () => {
-      invalidateDashboard();
-      queryClient.invalidateQueries({ queryKey: branchKeys.all });
-    },
-  });
+  const mutation = useGenericMutation(createBranch, [
+    branchKeys.all,
+    dashboardKeys.dashboard,
+  ]);
   return mutation;
 };

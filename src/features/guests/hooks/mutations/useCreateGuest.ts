@@ -1,17 +1,12 @@
-import { useMutation } from '@tanstack/react-query';
 import { createGuest } from '@/api/guest.api';
-import { GuestFormType } from '@/features/guests/types/guest.types';
-import { queryClient } from '@/api/queryClient';
+import { dashboardKeys } from '@/features/dashboard/dashboard.keys';
 import { guestKeys } from '@/features/guests/guest.keys';
-import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
+import { GuestFormType } from '@/features/guests/types/guest.types';
+import { useGenericMutation } from '@/hooks/useGenericMutation';
 
 export const useCreateGuest = (roomId: string) => {
-  return useMutation({
-    mutationFn: (guestData: GuestFormType) => createGuest(roomId, guestData),
-    onSuccess: () => {
-      invalidateDashboard();
-
-      queryClient.invalidateQueries({ queryKey: guestKeys.list(roomId) });
-    },
-  });
+  return useGenericMutation(
+    (guestData: GuestFormType) => createGuest(roomId, guestData),
+    [dashboardKeys.dashboard, guestKeys.list(roomId)],
+  );
 };

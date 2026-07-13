@@ -9,7 +9,8 @@ import { showAlert } from "@/utils/showAlert";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Text, View } from "react-native";
-import { deleteRoom } from "../../../api/room.api";
+import { useDeleteRoom } from "../hooks/mutations/useDeleteRoom";
+import Loader from "@/components/Loader";
 
 export function RoomCard({ room, onEdit }: { room: roomType, onEdit: (room: roomType) => void }) {
     const navigation = useNavigation<NativeStackNavigationProp<PgStackParamList, 'Guests'>>();
@@ -20,12 +21,13 @@ export function RoomCard({ room, onEdit }: { room: roomType, onEdit: (room: room
         }
         navigation.navigate('Guests', { roomId: room.id, roomNumber: room.roomNumber, capacity: room.capacity });
     }
+    const { mutateAsync, isPending } = useDeleteRoom(room.branchId);
     const handleEdit = () => {
         onEdit(room)
     };
     const deleteRoomFn = async () => {
         try {
-            await deleteRoom(room.id);
+            await mutateAsync(room.id);
         } catch (err) {
             console.log(err);
         }
@@ -39,24 +41,43 @@ export function RoomCard({ room, onEdit }: { room: roomType, onEdit: (room: room
     const actions = [{ label: "Edit", onPress: handleEdit }, { label: "Delete", destructive: true, onPress: handleDelete }];
 
     return (
-        <View style={[cardStyle.card]} key={room.id}>
-            <View style={cardStyle.cardHeader}>
-                <Text style={cardStyle.title}>Room No. {room.roomNumber}</Text>
-                <PopupMenu actions={actions} />
-            </View>
-            <Text style={cardStyle.text}>Capacity: {room.capacity}</Text>
-            <Text style={cardStyle.text}>
-                Rent: ₹ {room.rent}
-            </Text>
-            <Text style={cardStyle.text}>
-                Room Availability:
-                <Text style={[!room.maintainance ? commonStyles.statusActive : commonStyles.statusInactive,]}>
-                    {room.maintainance ? " Under Maintainance" : " Available"}
-                </Text>
-            </Text>
+        <View style={cardStyle.card}>
+            {isPending ? (
+                <Loader message="Deleting" />
+            ) : (
+                <>
+                    <View style={cardStyle.cardHeader}>
+                        <Text style={cardStyle.title}>Room No. {room.roomNumber}</Text>
+                        <PopupMenu actions={actions} />
+                    </View>
 
-            <ActionButton title="View Details" onPress={handlePress} />
+                    <Text style={cardStyle.text}>Capacity: {room.capacity}</Text>
 
+                    <Text style={cardStyle.text}>
+                        Rent: ₹ {room.rent}
+                    </Text>
+
+                    <Text style={cardStyle.text}>
+                        Room Availability:
+                        <Text
+                            style={[
+                                !room.maintainance
+                                    ? commonStyles.statusActive
+                                    : commonStyles.statusInactive,
+                            ]}
+                        >
+                            {room.maintainance
+                                ? " Under Maintainance"
+                                : " Available"}
+                        </Text>
+                    </Text>
+
+                    <ActionButton
+                        title="View Details"
+                        onPress={handlePress}
+                    />
+                </>
+            )}
         </View>
-    )
+    );
 }

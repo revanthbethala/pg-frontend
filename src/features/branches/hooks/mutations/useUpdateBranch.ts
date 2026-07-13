@@ -1,9 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/api/queryClient';
 import { updateBranch } from '@/api/branches.api';
-import { branchFormType } from '@/features/branches/types/branch';
 import { branchKeys } from '@/features/branches/hooks/branch.keys';
-import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
+import { branchFormType } from '@/features/branches/types/branch';
+import { dashboardKeys } from '@/features/dashboard/dashboard.keys';
+import { useGenericMutation } from '@/hooks/useGenericMutation';
 
 type UpdateBranchVariables = {
   branchId: string;
@@ -11,14 +10,9 @@ type UpdateBranchVariables = {
 };
 
 export const useUpdateBranch = () => {
-  const mutation = useMutation({
-    mutationFn: ({ branchId, data }: UpdateBranchVariables) =>
-      updateBranch(branchId, data),
-    onSuccess: () => {
-      invalidateDashboard();
-
-      queryClient.invalidateQueries({ queryKey: branchKeys.all });
-    },
-  });
+  const mutation = useGenericMutation(
+    ({ branchId, data }: UpdateBranchVariables) => updateBranch(branchId, data),
+    [dashboardKeys.dashboard, branchKeys.all],
+  );
   return mutation;
 };

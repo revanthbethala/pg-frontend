@@ -6,6 +6,6 @@ export const branchSchema = z.object({
     .min(3, 'Branch name must be at least 3 characters'),
   address: z
     .string({ required_error: 'Address is required' })
-    .min(5, 'Address must be at least 5 characters'),
+    .min(6, 'Address must be at least 5 characters'),
   isActive: z.boolean().default(true).optional(),
 });

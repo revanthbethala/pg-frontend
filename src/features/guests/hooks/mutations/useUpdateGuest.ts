@@ -1,23 +1,18 @@
-import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/api/queryClient';
 import { updateGuest } from '@/api/guest.api';
+import { dashboardKeys } from '@/features/dashboard/dashboard.keys';
 import { guestKeys } from '@/features/guests/guest.keys';
 import { guestType } from '@/features/guests/types/guest.types';
-import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
+import { useGenericMutation } from '@/hooks/useGenericMutation';
 
 export const useUpdateGuest = (roomId: string) => {
-  return useMutation({
-    mutationFn: ({
+  return useGenericMutation(
+    ({
       guestId,
       guestData,
     }: {
       guestId: string;
       guestData: Partial<guestType>;
     }) => updateGuest(guestId, guestData),
-    onSuccess: () => {
-      invalidateDashboard();
-
-      queryClient.invalidateQueries({ queryKey: guestKeys.list(roomId) });
-    },
-  });
+    [guestKeys.list(roomId), dashboardKeys.dashboard],
+  );
 };

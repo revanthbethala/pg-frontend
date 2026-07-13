@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
-import { guestKeys } from '@/features/guests/guest.keys';
 import { getAllGuestsByRoom } from '@/api/guest.api';
+import { guestKeys } from '@/features/guests/guest.keys';
+import { useGenericQuery } from '@/hooks/useGenericQuery';
 
 export const useGuests = (roomId: string) => {
-  return useQuery({
-    queryKey: guestKeys.list(roomId),
-    queryFn: () => getAllGuestsByRoom(roomId),
-    enabled: !!roomId,
-  });
+  return useGenericQuery(
+    guestKeys.list(roomId),
+    () => getAllGuestsByRoom(roomId),
+    { enabled: !!roomId },
+  );
 };

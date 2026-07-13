@@ -1,21 +1,20 @@
-import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/api/queryClient';
 import { deleteGuest } from '@/api/guest.api';
+import { dashboardKeys } from '@/features/dashboard/dashboard.keys';
 import { guestKeys } from '@/features/guests/guest.keys';
+import { useGenericMutation } from '@/hooks/useGenericMutation';
 import { showAlert } from '@/utils/showAlert';
-import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
 
 export const useDeleteGuest = (roomId: string) => {
-  return useMutation({
-    mutationFn: (guestId: string) => deleteGuest(guestId),
-    onSuccess: () => {
-      invalidateDashboard();
-
-      showAlert('Success', 'Guest deleted successfully.');
-      queryClient.invalidateQueries({ queryKey: guestKeys.list(roomId) });
+  return useGenericMutation(
+    deleteGuest,
+    [dashboardKeys.dashboard, guestKeys.list(roomId)],
+    {
+      onSuccess: () => {
+        showAlert('Success', 'Guest deleted successfully.');
+      },
+      onError: () => {
+        showAlert('Failed', 'Guest deletion failed.');
+      },
     },
-    onError: () => {
-      showAlert('Failed', 'Guest deletion failed.');
-    },
-  });
+  );
 };

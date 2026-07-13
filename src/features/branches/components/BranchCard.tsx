@@ -12,6 +12,7 @@ import { PopupMenu } from "@/components/PopUpMenu";
 import { useDeleteBranch } from "@/features/branches/hooks/mutations/useDeleteBranch";
 import { branchType } from "@/features/branches/types/branch";
 import { showConfirmAlert } from "@/utils/confirmAlert";
+import Loader from "@/components/Loader";
 
 type NavigationProp = NativeStackNavigationProp<PgStackParamList>;
 
@@ -25,8 +26,7 @@ export function BranchCard({ branch, onEdit }: Props) {
     const handleEdit = () => {
         onEdit(branch)
     };
-    const {
-        mutateAsync: deleteBranch } = useDeleteBranch();
+    const { mutateAsync: deleteBranch, isPending } = useDeleteBranch();
 
     const handlePress = () => {
         navigation.getParent()?.navigate("Rooms", {
@@ -36,13 +36,8 @@ export function BranchCard({ branch, onEdit }: Props) {
         });
     };
 
-    const deleteBranchFn = async () => {
-        try {
-            await deleteBranch(branch.id);
-
-        } catch (err) {
-            console.log(err);
-        }
+    const deleteBranchFn = () => {
+        deleteBranch(branch.id);
     }
 
 
@@ -67,35 +62,40 @@ export function BranchCard({ branch, onEdit }: Props) {
 
     return (
         <View style={cardStyle.card}>
-            <View style={cardStyle.cardHeader}>
-                <Text style={cardStyle.title}>
-                    {capitalize(branch.branchName)}
-                </Text>
+            {isPending ? <Loader message={"Deleting"} /> :
+                <>
+                    <View style={cardStyle.cardHeader}>
+                        <Text style={cardStyle.title}>
+                            {capitalize(branch.branchName)}
+                        </Text>
 
-                <PopupMenu actions={actions} />
-            </View>
+                        <PopupMenu actions={actions} />
+                    </View>
 
-            <View style={cardStyle.contentCard}>
+                    <View style={cardStyle.contentCard}>
 
-                <Text
-                    style={cardStyle.text}
-                    ellipsizeMode="tail"
-                    numberOfLines={2}
-                >
-                    Address: {branch.address}
-                </Text>
+                        <Text
+                            style={cardStyle.text}
+                            ellipsizeMode="tail"
+                            numberOfLines={2}
+                        >
+                            Address: {branch.address}
+                        </Text>
 
 
-                <Text style={cardStyle.text}>
-                    Branch Status:
-                    <Text style={[branch.isActive ? commonStyles.statusActive : commonStyles.statusInactive,]}>
-                        {branch.isActive ? " Active" : " Not Active"}
-                    </Text>
-                </Text>
+                        <Text style={cardStyle.text}>
+                            Branch Status:
+                            <Text style={[branch.isActive ? commonStyles.statusActive : commonStyles.statusInactive,]}>
+                                {branch.isActive ? " Active" : " Not Active"}
+                            </Text>
+                        </Text>
 
-                <ActionButton title="View Details" onPress={handlePress} />
+                        <ActionButton title="View Details" onPress={handlePress} />
 
-            </View>
+                    </View>
+                </>
+            }
+
         </View>
     );
 }

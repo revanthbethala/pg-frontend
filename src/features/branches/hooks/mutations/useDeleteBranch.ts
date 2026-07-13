@@ -1,22 +1,20 @@
-import { useMutation } from '@tanstack/react-query';
 import { deleteBranch } from '@/api/branches.api';
-import { queryClient } from '@/api/queryClient';
 import { branchKeys } from '@/features/branches/hooks/branch.keys';
+import { dashboardKeys } from '@/features/dashboard/dashboard.keys';
+import { useGenericMutation } from '@/hooks/useGenericMutation';
 import { showAlert } from '@/utils/showAlert';
-import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
 
 export const useDeleteBranch = () => {
-  const mutation = useMutation({
-    mutationFn: (id: string) => deleteBranch(id),
-    onSuccess: () => {
-      invalidateDashboard();
-
-      showAlert('Success', 'Branch deleted successfully.');
-      queryClient.invalidateQueries({ queryKey: branchKeys.all });
+  return useGenericMutation(
+    deleteBranch,
+    [branchKeys.all, dashboardKeys.dashboard],
+    {
+      onSuccess: () => {
+        showAlert('Success', 'Branch deleted successfully.');
+      },
+      onError: () => {
+        showAlert('Failed', 'Branch deletion failed.');
+      },
     },
-    onError: () => {
-      showAlert('Failed', 'Branch deletion failed.');
-    },
-  });
-  return mutation;
+  );
 };

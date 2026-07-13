@@ -1,11 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { getUserProfile } from '@/api/profile.api';
 import { profileKeys } from '@/features/profile/profile.keys';
-import { getUserProfile } from '@/features/profile/api/profile.api';
+import { useGenericQuery } from '@/hooks/useGenericQuery';
 
 export const useGetProfile = () => {
-  const query = useQuery({
-    queryKey: profileKeys.profile,
-    queryFn: getUserProfile,
-  });
+  const query = useGenericQuery(profileKeys.profile, getUserProfile);
   return query;
 };

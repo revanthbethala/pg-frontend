@@ -1,18 +1,12 @@
-import { queryClient } from '@/api/queryClient';
-import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
 import { createRoom } from '@/api/room.api';
+import { dashboardKeys } from '@/features/dashboard/dashboard.keys';
 import { roomKeys } from '@/features/rooms/room.keys';
 import { CreateRoomRequestType } from '@/features/rooms/types/room.types';
-import { useMutation } from '@tanstack/react-query';
+import { useGenericMutation } from '@/hooks/useGenericMutation';
 
 export const useCreateRoom = (branchId: string) => {
-  return useMutation({
-    mutationFn: (roomData: CreateRoomRequestType) =>
-      createRoom(branchId, roomData),
-    onSuccess: () => {
-      invalidateDashboard();
-
-      queryClient.invalidateQueries({ queryKey: roomKeys.byBranch(branchId) });
-    },
-  });
+  return useGenericMutation(
+    (roomData: CreateRoomRequestType) => createRoom(branchId, roomData),
+    [dashboardKeys.dashboard, roomKeys.byBranch(branchId)],
+  );
 };

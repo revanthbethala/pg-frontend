@@ -1,6 +1,9 @@
 import { ENDPOINTS } from '@/api/endPoints';
 import { del, get, put } from '@/api/http';
-import { profileRequestType, profileType } from '../types/profile.types';
+import {
+  profileRequestType,
+  profileType,
+} from '@/features/profile/types/profile.types';
 
 export async function getUserProfile() {
   return get<profileType>(ENDPOINTS.USER.PROFILE);

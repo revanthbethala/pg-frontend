@@ -1,11 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
-import { getDashboard } from '@/features/dashboard/api/dashboard.api';
+import { getDashboard } from '@/api/dashboard.api';
+import { useGenericQuery } from '@/hooks/useGenericQuery';
 import { dashboardKeys } from '../../dashboard.keys';
 
 export const useDashboard = () => {
-  const query = useQuery({
-    queryKey: dashboardKeys.dashboard,
-    queryFn: getDashboard,
-  });
+  const query = useGenericQuery(dashboardKeys.dashboard, getDashboard);
   return query;
 };

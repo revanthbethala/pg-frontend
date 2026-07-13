@@ -1,16 +1,14 @@
+import { deleteUser } from '@/api/profile.api';
 import { useAuthContext } from '@/context/useAuthContext';
-import { invalidateDashboard } from '@/features/dashboard/util/invalidateDashboard';
-import { deleteUser } from '@/features/profile/api/profile.api';
-import { useMutation } from '@tanstack/react-query';
+import { dashboardKeys } from '@/features/dashboard/dashboard.keys';
+import { useGenericMutation } from '@/hooks/useGenericMutation';
 
 export const useDeleteProfile = () => {
   const { logout } = useAuthContext();
-  const query = useMutation({
-    mutationFn: deleteUser,
+
+  return useGenericMutation(deleteUser, [dashboardKeys.dashboard], {
     onSuccess: () => {
-      invalidateDashboard();
       logout();
     },
   });
-  return query;
 };
